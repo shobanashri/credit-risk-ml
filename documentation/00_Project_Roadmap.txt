@@ -1,0 +1,497 @@
+============================================================
+CREDITGUARD — PROJECT ROADMAP
+=============================
+
+Project Title:
+Credit Risk Assessment & Loan Default Prediction
+
+Project Name:
+CreditGuard
+
+Project Type:
+Machine Learning Classification Project with a Streamlit Web Application
+
+Primary Objective:
+To analyze borrower and loan characteristics, identify patterns associated with loan default, develop a machine learning classification model, and build an interactive application that displays the model-estimated probability of default.
+
+Important Note:
+CreditGuard is an educational portfolio project. Its predictions and risk labels are illustrative and must not be treated as actual lending decisions or validated financial advice.
+
+============================================================
+1. PROJECT WORKFLOW
+============================================================
+
+The project follows this sequence:
+
+1. Problem Understanding
+2. Data Understanding
+3. Exploratory Data Analysis (EDA)
+4. Data Cleaning and Preprocessing
+5. Feature Engineering and Selection
+6. Train-Test Split and Model Preparation
+7. Model Training
+8. Model Evaluation
+9. Decision Threshold Exploration
+10. Model Saving
+11. Streamlit Application Development
+12. Application Testing and Validation
+13. Documentation and Portfolio Preparation
+14. Future Improvements
+
+============================================================
+2. PROJECT PHASES
+=================
+
+PHASE 1 — PROBLEM UNDERSTANDING
+
+Objective:
+Understand the business problem and define what the model is expected to predict.
+
+Key Points:
+
+* Loan default is the prediction target.
+* The target column is loan_status.
+* loan_status = 0 represents no default recorded.
+* loan_status = 1 represents default recorded.
+* The task is a binary classification problem.
+
+Expected Outcome:
+A clearly defined prediction problem and project objective.
+
+PHASE 2 — DATA UNDERSTANDING
+
+Objective:
+Understand the dataset's structure, variables, data types, and quality.
+
+Dataset:
+credit_risk_dataset.csv
+
+Original Dataset Location:
+data/raw/credit_risk_dataset.csv
+
+Original Dataset Shape:
+32,581 rows × 12 columns
+
+Initial Findings:
+
+* Duplicate rows: 165
+* Missing person_emp_length values: 895
+* Missing loan_int_rate values: 3,116
+* Non-default records: 25,473
+* Default records: 7,108
+
+Target Distribution:
+
+* loan_status = 0: approximately 78.18%
+* loan_status = 1: approximately 21.82%
+
+Key Learning:
+Understanding the dataset before cleaning or modeling helps identify data-quality problems, target distribution, and potential risks in the modeling process.
+
+PHASE 3 — EXPLORATORY DATA ANALYSIS (EDA)
+
+Objective:
+Explore the dataset to identify patterns and relationships between borrower characteristics, loan characteristics, and loan default.
+
+Areas Explored:
+
+* Target-variable distribution
+* Numerical feature distributions
+* Categorical feature distributions
+* Missing values and unusual observations
+* Borrower age
+* Annual income
+* Employment length
+* Loan amount
+* Interest rate
+* Loan-to-income ratio
+* Home ownership
+* Loan intent
+* Loan grade
+* Previous default history
+* Credit history length
+
+Key Findings:
+
+* The target variable is imbalanced.
+* Applicants with recorded defaults had higher median loan amounts.
+* Applicants with recorded defaults had higher median interest rates.
+* The median loan_percent_income was higher among applicants with recorded defaults.
+* The observed default rate was higher for RENT than OWN in this dataset.
+* DEBTCONSOLIDATION had the highest observed default rate among the loan-intent categories examined.
+* Applicants with a recorded previous default had a higher observed default rate.
+* Loan grade G showed a high observed default rate, but its sample size was small.
+
+Interpretation:
+These findings describe associations in the dataset. They do not establish causation or guarantee how an individual borrower will behave.
+
+PHASE 4 — DATA CLEANING AND PREPROCESSING
+
+Objective:
+Improve data quality and prepare a clean dataset for subsequent analysis and modeling.
+
+Operations Performed:
+
+1. Created a working copy of the original DataFrame.
+2. Removed exact duplicate records.
+3. Treated ages above 100 years as invalid and replaced them with missing values.
+4. Treated employment lengths above 50 years as invalid and replaced them with missing values.
+5. Imputed missing numerical values using median values.
+6. Validated the cleaned dataset.
+7. Saved the cleaned dataset.
+
+Cleaned Dataset:
+credit_risk_cleaned.csv
+
+Cleaned Dataset Location:
+data/raw/credit_risk_cleaned.csv
+
+Final Validation Results:
+
+* Shape: 32,416 rows × 12 columns
+* Missing values: 0
+* Duplicate rows: 0
+* Ages above 100: 0
+* Employment lengths above 50: 0
+
+Important Methodological Note:
+The cleaning and median imputation were performed before the train-test split in the existing workflow. This can introduce data leakage because information from the eventual test set may influence preprocessing.
+
+For a more reliable evaluation, preprocessing statistics should be learned from the training data only, ideally through a scikit-learn Pipeline or ColumnTransformer.
+
+PHASE 5 — FEATURE ENGINEERING AND SELECTION
+
+Objective:
+Prepare the input features required by the model.
+
+Features Used by the Current Application:
+
+1. person_age
+2. person_income
+3. person_home_ownership
+4. person_emp_length
+5. loan_intent
+6. loan_amnt
+7. loan_int_rate
+8. loan_percent_income
+9. cb_person_default_on_file
+10. cb_person_cred_hist_length
+
+Derived Feature:
+loan_percent_income is calculated in the application as:
+
+loan_amnt / person_income
+
+The application checks that income is greater than zero before calculating this ratio.
+
+Important Note:
+The cleaned dataset also contains loan_grade, but loan_grade is not included in the current application's input feature list. The reason for excluding it should be confirmed against the original training pipeline rather than assumed.
+
+Validation Requirement:
+The feature names, order, data types, categorical values, and transformations used by the application must match those expected by the saved model.
+
+PHASE 6 — TRAIN-TEST SPLIT AND MODEL PREPARATION
+
+Objective:
+Prepare training and testing data for model development and evaluation.
+
+Purpose of the Split:
+
+* Training data is used to fit the model.
+* Testing data is used to evaluate how well the model performs on unseen records.
+
+Important Improvement:
+The final evaluation workflow should separate training, validation, and testing responsibilities.
+
+Recommended approach:
+
+* Fit preprocessing steps on training data only.
+* Use validation data to compare models and select the decision threshold.
+* Keep the test set untouched until final evaluation.
+* Use stratification where appropriate to preserve target-class proportions.
+
+Note:
+The existing workflow used the test set during decision-threshold exploration. Therefore, the currently reported results should not be treated as an independent final evaluation.
+
+PHASE 7 — MODEL TRAINING
+
+Objective:
+Train a machine learning classifier to distinguish between records with and without a recorded loan default.
+
+Current Model:
+Random Forest Classifier
+
+Model Artifact:
+models/credit_risk_random_forest.joblib
+
+Key Concept:
+A Random Forest combines predictions from multiple decision trees. The fitted model is used by the application to estimate the probability associated with the default class.
+
+Important:
+The exact training configuration, hyperparameters, random seed, and preprocessing pipeline should be documented from the original training code. They should not be inferred from the saved model's filename.
+
+PHASE 8 — MODEL EVALUATION
+
+Objective:
+Evaluate classification performance using suitable metrics.
+
+Reported Metrics:
+
+* Accuracy: 91.58%
+* ROC-AUC: 92.09%
+* Default-class precision: 89%
+* Default-class recall: 70%
+
+Reported Confusion Matrix:
+
+```
+                     Predicted
+                No Default   Default
+```
+
+Actual No Default      4,945       121
+Actual Default           425       993
+
+Interpretation:
+
+* True negatives: 4,945
+* False positives: 121
+* False negatives: 425
+* True positives: 993
+
+Metric Meanings:
+
+* Accuracy measures the proportion of all predictions that were correct.
+* Precision measures how many predicted defaults were actual defaults in the evaluation data.
+* Recall measures how many actual defaults were identified by the model.
+* ROC-AUC measures how well the model ranks positive cases above negative cases across classification thresholds.
+
+Important Evaluation Limitation:
+Because the test set was used during threshold exploration, the reported results may be optimistic. A fresh, untouched test set should be used for a more defensible final evaluation.
+
+PHASE 9 — DECISION THRESHOLD EXPLORATION
+
+Objective:
+Choose the probability threshold used to convert an estimated default probability into a binary class prediction.
+
+Current Threshold:
+0.40
+
+Threshold File:
+models/decision_threshold.txt
+
+Current Classification Rule:
+
+If predicted default probability >= 0.40:
+Predicted class = 1
+
+Otherwise:
+Predicted class = 0
+
+Important Concept:
+A threshold of 0.40 is a modeling choice, not a universal financial rule.
+
+Changing the threshold can affect:
+
+* False positives
+* False negatives
+* Precision
+* Recall
+* The number of applicants flagged for further review
+
+Recommended Improvement:
+Select the threshold using validation data and a clearly defined evaluation objective. Do not use the final test set for threshold selection.
+
+PHASE 10 — MODEL SAVING
+
+Objective:
+Save the trained model and decision threshold so the application can load them without retraining.
+
+Saved Files:
+
+* models/credit_risk_random_forest.joblib
+* models/decision_threshold.txt
+
+Technology:
+joblib
+
+Important:
+The Python and scikit-learn environment used to load the saved model should be compatible with the environment used to train it. Record the relevant package versions and retrain or re-export the model when necessary.
+
+PHASE 11 — STREAMLIT APPLICATION DEVELOPMENT
+
+Objective:
+Create an interactive interface through which users can enter borrower and loan details and view the model's output.
+
+Main Application:
+app.py
+
+Interface Technology:
+Streamlit
+
+Styling:
+styles/style.css
+
+Main Application Features:
+
+* Collects borrower and loan inputs.
+* Validates important inputs.
+* Calculates loan_percent_income.
+* Loads the saved Random Forest model.
+* Loads the configured decision threshold.
+* Estimates the probability of default.
+* Displays a provisional risk category.
+* Displays informational review guidance.
+* Shows model information, reported metrics, limitations, and input details.
+
+Probability Handling:
+The application identifies the probability column associated with class 1 using model.classes_, rather than assuming that the second probability column always represents default.
+
+Important Limitation:
+The probability displayed by the application is model-estimated. It should not be assumed to be a calibrated estimate of real-world default probability.
+
+PHASE 12 — APPLICATION TESTING AND VALIDATION
+
+Objective:
+Check that the application loads correctly and handles inputs and model outputs safely.
+
+Suggested Checks:
+
+* The application starts successfully.
+* The model file exists and loads.
+* The threshold file exists and contains a valid number between 0 and 1.
+* The model supports predict_proba.
+* Income must be greater than zero.
+* Loan amount and other numerical inputs must be valid.
+* Categorical inputs must match the values expected by the model.
+* The calculated loan_percent_income is correct.
+* The probability of default is between 0 and 1.
+* The application handles missing files and invalid inputs gracefully.
+* Predictions are consistent with the training feature schema.
+
+Testing Status:
+Record the actual tests performed and their outcomes separately. Do not mark a test as passed unless it has been run.
+
+PHASE 13 — DOCUMENTATION AND PORTFOLIO PREPARATION
+
+Objective:
+Document the project's technical workflow, findings, limitations, and learning outcomes.
+
+Planned Documentation:
+
+* 00_Project_Roadmap.txt
+* 01_Project_Learning_Notes.md
+* 02_Model_Experiment_Log.txt
+* 03_Mistakes_and_Lessons.txt
+* 04_Interview_Preparation.md
+* Credit_Risk_ML_Revision_Notes.md
+
+Other Portfolio Tasks:
+
+* Maintain a clear README.md.
+* Document installation and application startup instructions.
+* Explain the dataset, features, model, metrics, and limitations.
+* Keep the repository structure organized.
+* Record package versions and reproducibility details.
+* Ensure the project description does not claim production readiness or real-world lending validation.
+
+PHASE 14 — FUTURE IMPROVEMENTS
+
+Potential Improvements:
+
+1. Use a proper train-validation-test workflow.
+2. Move imputation and other preprocessing into a fitted pipeline.
+3. Tune the decision threshold using validation data only.
+4. Evaluate the final model on an untouched test set.
+5. Investigate probability calibration.
+6. Report class-specific metrics and confusion matrices.
+7. Add automated input and prediction tests.
+8. Record exact package versions.
+9. Document model hyperparameters and training configuration.
+10. Create a model card describing intended use, limitations, and risks.
+11. Investigate whether excluding loan_grade from the application is consistent with the original training pipeline.
+12. Verify that loan_percent_income is calculated exactly as it was during model training.
+
+============================================================
+3. CURRENT PROJECT STRUCTURE
+============================
+
+Credit-Risk-ML/
+|
+|-- app.py
+|
+|-- data/
+|   |-- raw/
+|       |-- credit_risk_dataset.csv
+|       |-- credit_risk_cleaned.csv
+|
+|-- models/
+|   |-- credit_risk_random_forest.joblib
+|   |-- decision_threshold.txt
+|
+|-- notebooks/
+|   |-- 01_data_understanding.ipynb
+|
+|-- styles/
+|   |-- style.css
+|
+|-- documentation/
+|   |-- 00_Project_Roadmap.txt
+|   |-- 01_Project_Learning_Notes.md
+|   |-- 02_Model_Experiment_Log.txt
+|   |-- 03_Mistakes_and_Lessons.txt
+|   |-- 04_Interview_Preparation.md
+|   |-- Credit_Risk_ML_Revision_Notes.md
+|
+|-- README.md
+|-- requirements.txt
+
+Note:
+This is the planned structure based on the files currently described. Update it to match the actual repository if additional files or folders exist.
+
+============================================================
+4. PROJECT COMPLETION CHECKLIST
+===============================
+
+[✓] Problem and target variable defined
+[✓] Original dataset inspected
+[✓] Exploratory data analysis completed
+[✓] Data cleaning completed
+[✓] Cleaned dataset validated
+[✓] Random Forest model trained
+[✓] Model saved
+[✓] Decision threshold saved
+[✓] Streamlit application developed
+[ ] Recheck the training and application feature schemas
+[ ] Record exact model-training configuration
+[ ] Run and document application tests
+[ ] Perform an independent final model evaluation
+[ ] Verify probability calibration
+[ ] Complete all documentation files
+[ ] Review README and repository structure
+[ ] Confirm reproducible installation in a clean environment
+
+============================================================
+5. FINAL PROJECT SUMMARY
+========================
+
+CreditGuard demonstrates an end-to-end educational machine learning workflow, from understanding and cleaning a dataset to analyzing patterns, training a classification model, evaluating its performance, saving model artifacts, and integrating the model into a Streamlit application.
+
+The project provides practical experience in:
+
+* Data understanding
+* Exploratory data analysis
+* Data cleaning and missing-value treatment
+* Feature preparation
+* Binary classification
+* Model evaluation
+* Decision-threshold selection
+* Model serialization
+* Application development
+* Technical documentation
+
+The project is a portfolio demonstration, not a validated credit-scoring system. Its current metrics and probability outputs must be interpreted with the documented evaluation and calibration limitations in mind.
+
+============================================================
+END OF PROJECT ROADMAP
+======================

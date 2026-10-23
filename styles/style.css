@@ -1,0 +1,882 @@
+
+/* ==========================================================
+   CREDITGUARD
+   Professional Streamlit UI
+   Palette: Navy + Teal + Theme-aware neutrals
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   1. GLOBAL DESIGN TOKENS
+   ---------------------------------------------------------- */
+
+:root {
+    --cg-navy: #17324D;
+    --cg-navy-soft: #244966;
+    --cg-teal: #0D9488;
+    --cg-teal-light: #CCFBF1;
+
+    --cg-green: #15803D;
+    --cg-green-bg: #DCFCE7;
+
+    --cg-amber: #B45309;
+    --cg-amber-bg: #FEF3C7;
+
+    --cg-orange: #C2410C;
+    --cg-orange-bg: #FFEDD5;
+
+    --cg-red: #B91C1C;
+    --cg-red-bg: #FEE2E2;
+
+    --cg-radius-sm: 10px;
+    --cg-radius-md: 14px;
+    --cg-radius-lg: 20px;
+
+    --cg-shadow:
+        0 5px 18px rgba(15, 23, 42, 0.055);
+}
+
+
+/* ----------------------------------------------------------
+   2. THEME-AWARE SURFACES
+   ---------------------------------------------------------- */
+
+/*
+   Prefer Streamlit's theme variables where available.
+   Explicit theme selectors provide fallbacks for versions
+   that expose data-theme on the app container.
+*/
+
+.stApp {
+    --cg-surface: var(--secondary-background-color, #F8FAFC);
+    --cg-border: var(--border-color, #E2E8F0);
+    --cg-text: var(--text-color, #1E293B);
+    --cg-muted: #64748B;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+[data-theme="light"] .stApp {
+    --cg-surface: #F8FAFC;
+    --cg-border: #E2E8F0;
+    --cg-text: #1E293B;
+    --cg-muted: #64748B;
+}
+
+[data-theme="dark"] .stApp {
+    --cg-surface: #1E293B;
+    --cg-border: #334155;
+    --cg-text: #E2E8F0;
+    --cg-muted: #A7B4C5;
+}
+
+
+/* ----------------------------------------------------------
+   3. PAGE LAYOUT
+   ---------------------------------------------------------- */
+
+.stApp {
+    background: var(--background-color, transparent);
+}
+
+.block-container {
+    max-width: 1320px;
+    padding-top: 2.2rem;
+    padding-bottom: 3.2rem;
+}
+
+section.main > div {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+}
+
+p {
+    line-height: 1.7;
+}
+
+
+/* ----------------------------------------------------------
+   4. TYPOGRAPHY
+   ---------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+    letter-spacing: -0.025em;
+}
+
+h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem) !important;
+    font-weight: 780 !important;
+    line-height: 1.16 !important;
+}
+
+h2 {
+    font-size: 1.55rem !important;
+    font-weight: 740 !important;
+    line-height: 1.3 !important;
+}
+
+h3 {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+}
+
+h4 {
+    font-size: 1.02rem !important;
+    font-weight: 680 !important;
+}
+
+
+/* ----------------------------------------------------------
+   5. SIDEBAR
+   ---------------------------------------------------------- */
+
+section[data-testid="stSidebar"] {
+    border-right: 1px solid var(--cg-border);
+}
+
+section[data-testid="stSidebar"] .block-container {
+    padding-top: 1.5rem;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0 15px;
+}
+
+.brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 14px;
+
+    background: var(--cg-navy);
+    color: #FFFFFF;
+
+    font-size: 15px;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+
+    flex-shrink: 0;
+}
+
+.brand-name {
+    color: var(--cg-text);
+    font-size: 1.22rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.brand-caption {
+    margin-top: 3px;
+
+    color: var(--cg-muted);
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: 0.12em;
+}
+
+.sidebar-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    padding: 11px 12px;
+    margin: 8px 0;
+
+    background: var(--cg-surface);
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-sm);
+}
+
+.sidebar-info-label {
+    color: var(--cg-muted);
+    font-size: 0.82rem;
+}
+
+.sidebar-info-value {
+    color: var(--cg-text);
+    font-size: 0.83rem;
+    font-weight: 750;
+    text-align: right;
+}
+
+
+/* ----------------------------------------------------------
+   6. HERO HEADER
+   ---------------------------------------------------------- */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+
+    padding: clamp(1.5rem, 4vw, 2.6rem);
+    margin: 0 0 2.3rem;
+
+    border: 1px solid rgba(13, 148, 136, 0.23);
+    border-radius: var(--cg-radius-lg);
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(13, 148, 136, 0.09),
+            rgba(23, 50, 77, 0.035)
+        );
+}
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+    right: -65px;
+    top: -95px;
+
+    width: 240px;
+    height: 240px;
+
+    border: 1px solid rgba(13, 148, 136, 0.15);
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+.hero-eyebrow {
+    margin-bottom: 13px;
+
+    color: var(--cg-teal);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+}
+
+.hero h1 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.hero-description {
+    max-width: 750px;
+    margin-bottom: 20px;
+
+    color: var(--cg-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hero-tags span {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 11px;
+
+    border: 1px solid var(--cg-border);
+    border-radius: 999px;
+
+    background: var(--background-color, transparent);
+    color: var(--cg-text);
+
+    font-size: 0.75rem;
+    font-weight: 650;
+}
+
+
+/* ----------------------------------------------------------
+   7. SECTION HEADINGS
+   ---------------------------------------------------------- */
+
+.section-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    margin: 1.7rem 0 1.25rem;
+}
+
+.section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 39px;
+    height: 39px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: rgba(13, 148, 136, 0.12);
+    color: var(--cg-teal);
+
+    font-size: 0.9rem;
+    font-weight: 850;
+}
+
+.section-heading-content {
+    min-width: 0;
+}
+
+.section-heading-content h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.section-subtitle {
+    margin: 6px 0 0;
+
+    color: var(--cg-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+
+/* ----------------------------------------------------------
+   8. FORM CONTAINER
+   ---------------------------------------------------------- */
+
+div[data-testid="stForm"] {
+    padding: clamp(1rem, 2.5vw, 1.7rem);
+
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-lg);
+
+    background: var(--background-color, transparent);
+
+    box-shadow: var(--cg-shadow);
+}
+
+div[data-testid="stForm"] h4 {
+    margin-top: 0.2rem;
+    margin-bottom: 1.1rem;
+}
+
+div[data-testid="stForm"] label {
+    font-weight: 620;
+}
+
+div[data-testid="stForm"] [data-baseweb="input"] > div,
+div[data-testid="stForm"] [data-baseweb="select"] > div,
+div[data-testid="stForm"] [data-baseweb="textarea"] > div {
+    border-radius: var(--cg-radius-sm);
+}
+
+div[data-testid="stForm"] [data-baseweb="input"] input,
+div[data-testid="stForm"] [data-baseweb="select"] input {
+    font-variant-numeric: tabular-nums;
+}
+
+.ratio-info {
+    padding-top: 5px;
+    margin-bottom: 8px;
+}
+
+.ratio-label {
+    color: var(--cg-text);
+    font-weight: 720;
+    font-size: 0.92rem;
+}
+
+.ratio-caption {
+    margin-top: 4px;
+    color: var(--cg-muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+
+/* ----------------------------------------------------------
+   9. BUTTONS
+   ---------------------------------------------------------- */
+
+.stFormSubmitButton > button,
+.stButton > button {
+    min-height: 3rem;
+
+    border-radius: 11px;
+
+    font-size: 0.94rem;
+    font-weight: 750;
+
+    transition:
+        transform 140ms ease,
+        box-shadow 140ms ease;
+}
+
+.stFormSubmitButton > button:hover,
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(13, 148, 136, 0.14);
+}
+
+.stFormSubmitButton > button:focus-visible,
+.stButton > button:focus-visible {
+    outline: 3px solid rgba(13, 148, 136, 0.35);
+    outline-offset: 3px;
+}
+
+
+/* ----------------------------------------------------------
+   10. RESULT CARDS
+   ---------------------------------------------------------- */
+
+.result-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 205px;
+
+    padding: 1.25rem;
+
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-md);
+
+    background: var(--cg-surface);
+
+    box-shadow: var(--cg-shadow);
+
+    box-sizing: border-box;
+}
+
+.result-card-label {
+    margin-bottom: 16px;
+
+    color: var(--cg-muted);
+
+    font-size: 0.70rem;
+    font-weight: 820;
+    letter-spacing: 0.075em;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+.result-card-value {
+    max-width: 100%;
+
+    color: var(--cg-text);
+
+    font-size: clamp(1.65rem, 2.4vw, 2.25rem);
+    font-weight: 830;
+    letter-spacing: -0.045em;
+    line-height: 1.18;
+
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.probability-card {
+    border-top: 4px solid var(--cg-teal);
+}
+
+.probability-card .result-card-value {
+    color: var(--cg-teal);
+}
+
+.risk-card {
+    border-top: 4px solid var(--cg-navy-soft);
+}
+
+.action-card {
+    border-top: 4px solid var(--cg-teal);
+}
+
+.result-card-description {
+    margin-top: auto;
+    padding-top: 15px;
+
+    color: var(--cg-muted);
+
+    font-size: 0.81rem;
+    line-height: 1.65;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ----------------------------------------------------------
+   11. RISK CATEGORY BADGES
+   ---------------------------------------------------------- */
+
+.risk-badge {
+    display: inline-flex;
+    align-items: center;
+
+    max-width: 100%;
+
+    padding: 9px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-size: clamp(0.87rem, 1.15vw, 1rem);
+    font-weight: 800;
+    line-height: 1.45;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.risk-low {
+    color: var(--cg-green);
+    background: var(--cg-green-bg);
+    border-color: rgba(21, 128, 61, 0.16);
+}
+
+.risk-moderate {
+    color: #92400E;
+    background: #FEF3C7;
+    border-color: rgba(180, 83, 9, 0.16);
+}
+
+.risk-elevated {
+    color: var(--cg-orange);
+    background: var(--cg-orange-bg);
+    border-color: rgba(194, 65, 12, 0.16);
+}
+
+.risk-high {
+    color: var(--cg-red);
+    background: var(--cg-red-bg);
+    border-color: rgba(185, 28, 28, 0.16);
+}
+
+
+/* ----------------------------------------------------------
+   12. ASSESSMENT ACTION TEXT
+   ---------------------------------------------------------- */
+
+.action-title {
+    max-width: 100%;
+
+    color: var(--cg-text);
+
+    font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+    font-weight: 800;
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
+}
+
+.action-review .action-title {
+    color: var(--cg-orange);
+}
+
+.action-standard .action-title {
+    color: var(--cg-teal);
+}
+
+
+/* ----------------------------------------------------------
+   13. PROBABILITY INDICATOR
+   ---------------------------------------------------------- */
+
+.probability-value {
+    padding-top: 3px;
+
+    color: var(--cg-teal);
+
+    font-size: 1.2rem;
+    font-weight: 850;
+    text-align: right;
+
+    font-variant-numeric: tabular-nums;
+}
+
+div[data-testid="stProgress"] {
+    margin-top: 0.35rem;
+    margin-bottom: 0.6rem;
+}
+
+div[data-testid="stProgress"] > div {
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.subsection-gap {
+    height: 1.25rem;
+}
+
+
+/* ----------------------------------------------------------
+   14. INTERPRETATION AND GUIDANCE PANELS
+   ---------------------------------------------------------- */
+
+.interpretation-card {
+    padding: 1.15rem 1.3rem;
+
+    border: 1px solid var(--cg-border);
+    border-left: 4px solid var(--cg-navy-soft);
+    border-radius: var(--cg-radius-md);
+
+    background: var(--cg-surface);
+}
+
+.interpretation-heading {
+    margin-bottom: 8px;
+
+    color: var(--cg-text);
+    font-size: 1.02rem;
+    font-weight: 800;
+}
+
+.interpretation-card p,
+.guidance-card p {
+    margin: 0;
+
+    color: var(--cg-muted);
+    font-size: 0.92rem;
+    line-height: 1.8;
+}
+
+.guidance-card {
+    padding: 1.25rem 1.3rem;
+    margin-top: 1rem;
+
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    border-radius: var(--cg-radius-md);
+
+    background: rgba(13, 148, 136, 0.055);
+}
+
+.guidance-label {
+    margin-bottom: 9px;
+
+    color: var(--cg-teal);
+    font-size: 0.7rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+}
+
+.guidance-title {
+    margin-bottom: 7px;
+
+    color: var(--cg-text);
+    font-size: 1.08rem;
+    font-weight: 820;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ----------------------------------------------------------
+   15. STREAMLIT METRICS
+   ---------------------------------------------------------- */
+
+/*
+   Keep technical metrics readable without forcing a fixed
+   card height. Do not apply these styles to the custom result
+   cards, which have their own markup.
+*/
+
+div[data-testid="stMetric"] {
+    padding: 1rem;
+
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-md);
+
+    background: var(--cg-surface);
+
+    min-width: 0;
+}
+
+div[data-testid="stMetricLabel"] {
+    font-weight: 650;
+}
+
+div[data-testid="stMetricValue"] {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+
+/* ----------------------------------------------------------
+   16. EXPANDERS
+   ---------------------------------------------------------- */
+
+div[data-testid="stExpander"] {
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-md);
+
+    overflow: hidden;
+}
+
+div[data-testid="stExpander"] summary {
+    font-weight: 700;
+}
+
+div[data-testid="stExpander"] summary:hover {
+    color: var(--cg-teal);
+}
+
+
+/* ----------------------------------------------------------
+   17. ALERTS
+   ---------------------------------------------------------- */
+
+div[data-testid="stAlert"] {
+    border-radius: var(--cg-radius-md);
+}
+
+
+/* ----------------------------------------------------------
+   18. DATAFRAMES
+   ---------------------------------------------------------- */
+
+div[data-testid="stDataFrame"] {
+    border: 1px solid var(--cg-border);
+    border-radius: var(--cg-radius-sm);
+
+    overflow: hidden;
+}
+
+
+/* ----------------------------------------------------------
+   19. DIVIDERS
+   ---------------------------------------------------------- */
+
+hr {
+    margin-top: 1.45rem;
+    margin-bottom: 1.45rem;
+
+    opacity: 0.5;
+}
+
+
+/* ----------------------------------------------------------
+   20. FOOTER
+   ---------------------------------------------------------- */
+
+.app-footer {
+    padding: 1.6rem 1rem 0.5rem;
+    margin-top: 2.5rem;
+
+    border-top: 1px solid var(--cg-border);
+
+    text-align: center;
+    line-height: 1.9;
+}
+
+.footer-brand {
+    margin-bottom: 3px;
+
+    color: var(--cg-teal);
+    font-size: 1rem;
+    font-weight: 850;
+    letter-spacing: -0.015em;
+}
+
+.app-footer > div:not(.footer-brand) {
+    color: var(--cg-muted);
+    font-size: 0.83rem;
+}
+
+.app-footer .footer-note {
+    margin-top: 6px;
+    font-size: 0.76rem;
+}
+
+
+/* ----------------------------------------------------------
+   21. RESPONSIVE LAYOUT
+   ---------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+    .result-card {
+        padding: 1rem;
+        min-height: 220px;
+    }
+
+    .result-card-label {
+        font-size: 0.66rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .block-container {
+        padding: 1.2rem 1rem 2rem;
+    }
+
+    section.main > div {
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+    }
+
+    .hero {
+        padding: 1.35rem;
+        margin-bottom: 1.6rem;
+    }
+
+    .hero::after {
+        right: -130px;
+    }
+
+    .hero h1 {
+        font-size: 1.85rem !important;
+    }
+
+    .section-heading {
+        gap: 10px;
+    }
+
+    .section-heading-content h2 {
+        font-size: 1.3rem !important;
+    }
+
+    div[data-testid="stForm"] {
+        padding: 1rem;
+    }
+
+    .result-card {
+        min-height: 0;
+        padding: 1rem;
+    }
+
+    .result-card-label {
+        margin-bottom: 10px;
+    }
+
+    .result-card-description {
+        padding-top: 12px;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   22. REDUCED MOTION ACCESSIBILITY
+   ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+}
+

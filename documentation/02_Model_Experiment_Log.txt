@@ -1,0 +1,65 @@
+==================================================
+CREDITGUARD — MODEL EXPERIMENT LOG
+==================================
+
+Project: Credit Risk Assessment & Loan Default Prediction
+Model: Random Forest Classifier
+Target: loan_status (0 = No Default, 1 = Default)
+
+1. MODEL CONFIGURATION
+
+---
+
+Algorithm: Random Forest Classifier
+Saved Model: models/credit_risk_random_forest.joblib
+Decision Threshold: 0.40
+Threshold File: models/decision_threshold.txt
+
+2. REPORTED EVALUATION RESULTS
+
+---
+
+Accuracy:          91.58%
+ROC-AUC:           92.09%
+Default Precision: 89%
+Default Recall:    70%
+
+Confusion Matrix:
+True Negatives:  4,945
+False Positives:   121
+False Negatives:   425
+True Positives:    993
+
+3. THRESHOLD
+
+---
+
+Current threshold: 0.40
+
+Predicted class = 1 when default probability >= 0.40;
+otherwise, predicted class = 0.
+
+4. EVALUATION LIMITATION
+
+---
+
+The test set was used during threshold exploration.
+Therefore, the reported metrics should not be treated as
+an independent final evaluation.
+
+5. FUTURE EXPERIMENTS
+
+---
+
+* Evaluate using an untouched test set.
+* Select the threshold using validation data only.
+* Prevent preprocessing data leakage.
+* Investigate probability calibration.
+* Compare models and document measured results.
+
+Note: No future experiment should be marked complete
+until it has actually been performed and evaluated.
+
+==================================================
+END OF EXPERIMENT LOG
+=====================

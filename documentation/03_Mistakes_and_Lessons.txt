@@ -1,0 +1,83 @@
+==================================================
+CREDITGUARD — MISTAKES AND LESSONS
+==================================
+
+1. DATA LEAKAGE
+
+---
+
+Mistake: Missing-value imputation was performed before
+the train-test split.
+
+Lesson: Split the data first and fit preprocessing steps
+using training data only.
+
+2. TEST SET USAGE
+
+---
+
+Mistake: The test set was used during threshold exploration.
+
+Lesson: Select the decision threshold using validation data
+and reserve the test set for final evaluation.
+
+3. DATA QUALITY
+
+---
+
+Challenge: The original dataset contained missing values,
+duplicate records, and implausible values.
+
+Lesson: Inspect, clean, and validate data before modeling.
+Document assumptions used to identify invalid values.
+
+4. FEATURE CONSISTENCY
+
+---
+
+Challenge: Application inputs must match the features
+and transformations expected by the trained model.
+
+Lesson: Keep training and inference preprocessing consistent.
+Verify the loan_percent_income calculation and feature schema.
+
+5. MODEL EVALUATION
+
+---
+
+Challenge: Accuracy alone cannot explain all classification
+errors, especially with an imbalanced target.
+
+Lesson: Evaluate precision, recall, ROC-AUC, and the
+confusion matrix together.
+
+6. PROBABILITY INTERPRETATION
+
+---
+
+Challenge: Model-estimated probabilities are not necessarily
+calibrated real-world default probabilities.
+
+Lesson: Validate calibration before interpreting outputs
+as reliable real-world risk estimates.
+
+7. RISK CATEGORIES
+
+---
+
+Challenge: The application's risk bands are illustrative.
+
+Lesson: Do not present them as validated financial risk
+grades or use them as automatic lending decisions.
+
+==================================================
+KEY TAKEAWAY
+============
+
+Reliable machine learning requires clean data, leakage-free
+preprocessing, independent evaluation, consistent features,
+and honest communication of limitations.
+
+==================================================
+END OF NOTES
+============
